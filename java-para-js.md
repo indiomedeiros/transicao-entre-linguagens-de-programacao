@@ -26,10 +26,10 @@
 | Lista                  | `ArrayList`                   | `Array`                                    |
 | Classe                 | `class Pessoa`                | `class Pessoa`                             |
 | Herança                | `extends`                     | `extends`                                  |
-| Interface              | `interface`                   | Não possui interface nativa                |
+| Interface              | `interface`                   | Não possui (use TypeScript para interfaces)|
 | Tratamento de erro     | `try/catch`                   | `try/catch`                                |
 | Impressão no console   | `System.out.println()`        | `console.log()`                            |
-| Entrada de dados       | `Scanner`                     | `prompt()`                                 |
+| Entrada de dados       | `Scanner`                     | `prompt()` (navegador) / `readline` (Node) |
 | Valor nulo             | `null`                        | `null`                                     |
 | Ausência de valor      | Não existe                    | `undefined`                                |
 
@@ -292,20 +292,23 @@ nomes.push("João");
 ## Java
 
 ```java
-class Pessoa {
-    String nome;
-    int idade;
-}
+// Objeto criado a partir de uma classe
+Pessoa pessoa = new Pessoa();
+pessoa.nome = "Ana";
+pessoa.idade = 20;
 ```
 
 ## JavaScript
 
 ```javascript
+// Objeto literal: criado diretamente, sem precisar de uma classe
 let pessoa = {
     nome: "Ana",
     idade: 20
 };
 ```
+
+> **Nota:** Em JavaScript, objetos podem ser criados diretamente como literais, sem a necessidade de uma classe. Isso não tem equivalente direto em Java.
 
 ---
 
@@ -377,13 +380,15 @@ class Cachorro extends Animal {
 
 # Tratamento de Exceções
 
+> **Atenção:** Em Java, `10 / 0` com inteiros lança `ArithmeticException`. Em JavaScript, **isso não acontece** — o resultado é `Infinity`, sem erro. Os exemplos abaixo usam situações que realmente lançam erros em cada linguagem.
+
 ## Java
 
 ```java
 try {
-    int resultado = 10 / 0;
+    int resultado = 10 / 0; // lança ArithmeticException
 } catch (Exception e) {
-    System.out.println("Erro");
+    System.out.println("Erro: " + e.getMessage());
 }
 ```
 
@@ -391,11 +396,13 @@ try {
 
 ```javascript
 try {
-    let resultado = 10 / 0;
+    null.propriedade; // lança TypeError: Cannot read properties of null
 } catch (erro) {
-    console.log("Erro");
+    console.log("Erro: " + erro.message);
 }
 ```
+
+> Em JavaScript, `10 / 0` retorna `Infinity` e **não** lança exceção. Use `try/catch` para erros reais, como acessar propriedades de `null` ou `undefined`, ou usar `JSON.parse()` com dados inválidos.
 
 ---
 
@@ -416,6 +423,21 @@ String nome = scanner.nextLine();
 ```javascript
 let nome = prompt("Digite seu nome:");
 ```
+
+## JavaScript (Node.js)
+
+```javascript
+const readline = require("readline");
+
+const rl = readline.createInterface({ input: process.stdin });
+
+rl.question("Digite seu nome: ", (nome) => {
+    console.log("Olá, " + nome);
+    rl.close();
+});
+```
+
+> `prompt()` só funciona no navegador. No Node.js, use o módulo `readline` ou bibliotecas como `inquirer`.
 
 ---
 
@@ -452,7 +474,8 @@ valor = [];
 | Mais verboso                      | Mais conciso                      |
 | Forte uso de orientação a objetos | Multiparadigma                    |
 | ArrayList para listas             | Array nativo                      |
-| Scanner para entrada              | prompt() ou bibliotecas           |
+| Scanner para entrada              | `prompt()` (navegador) ou `readline` / `inquirer` (Node.js) |
+| `10 / 0` lança `ArithmeticException` | `10 / 0` retorna `Infinity`    |
 
 ---
 
@@ -462,8 +485,9 @@ valor = [];
 2. Troque `ArrayList` por `Array`.
 3. Troque tipos (`int`, `String`, `double`) por `let` ou `const`.
 4. Entenda que o tipo de uma variável pode mudar durante a execução.
-5. Objetos literais são amplamente utilizados.
+5. Objetos literais são amplamente utilizados — não precisam de uma classe.
 6. Nem tudo precisa estar dentro de uma classe.
 7. JavaScript é multiparadigma: procedural, orientado a objetos e funcional.
+8. Divisão por zero **não lança erro** em JavaScript — retorna `Infinity`.
 
 > JavaScript não é uma versão simplificada de Java. São linguagens diferentes que compartilham parte da sintaxe básica, mas possuem filosofias, ecossistemas e formas de execução distintas.
